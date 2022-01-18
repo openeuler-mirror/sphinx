@@ -4,7 +4,7 @@
 
 Name:		sphinx
 Version:	2.2.11
-Release:	1
+Release:	2
 Summary:	Free open-source SQL full-text search engine
 License:	GPLv2+
 URL:		http://sphinxsearch.com
@@ -13,6 +13,7 @@ Source1:	searchd.service
 
 Patch0001:	%{name}-2.0.3-fix_static.patch
 Patch0002:	listen_local.patch
+Patch0003:	CVE-2020-29050.patch
 
 BuildRequires:          gcc gcc-c++ expat-devel mariadb-connector-c-devel openssl-devel libpq-devel systemd
 Requires(post):		systemd
@@ -223,5 +224,8 @@ chown -R %{sphinx_user}:root %{_localstatedir}/lib/%{name}/
 %{_mandir}/man1/*
 
 %changelog
+* Mon Jan 17 2022 houyingchao <houyingchao@huawei.com> - 2.2.11-2
+- Fix CVE-2020-29050
+
 * Fri Mar 06 2020 openEuler Buildteam <buildteam@openeuler.org> - 2.2.11-1
 - Package init
