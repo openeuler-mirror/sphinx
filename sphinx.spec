@@ -4,7 +4,7 @@
 
 Name:		sphinx
 Version:	2.2.11
-Release:	2
+Release:	3
 Summary:	Free open-source SQL full-text search engine
 License:	GPLv2+
 URL:		http://sphinxsearch.com
@@ -91,6 +91,10 @@ done
 iconv -f iso8859-1 -t utf-8 doc/%{name}.txt > doc/%{name}.txt.conv && mv -f doc/%{name}.txt.conv doc/%{name}.txt
 
 %build
+%if "%toolchain" == "clang"
+	export CFLAGS="$CFLAGS -Wno-unneeded-internal-declaration -Wno-reserved-user-defined-literal -Wno-c++11-narrowing -Wno-return-type"
+	export CXXFLAGS="$CXXFLAGS -Wno-unneeded-internal-declaration -Wno-reserved-user-defined-literal -Wno-c++11-narrowing -Wno-return-type"
+%endif
 %configure --sysconfdir=%{_sysconfdir}/%{name} --with-mysql --with-pgsql --enable-id64
 make %{?_smp_mflags}
 pushd api/libsphinxclient
@@ -224,6 +228,9 @@ chown -R %{sphinx_user}:root %{_localstatedir}/lib/%{name}/
 %{_mandir}/man1/*
 
 %changelog
+* Sat May 06 2023 yoo <sunyuechi@iscas.ac.cn> - 2.2.11-3
+- fix clang build error
+
 * Mon Jan 17 2022 houyingchao <houyingchao@huawei.com> - 2.2.11-2
 - Fix CVE-2020-29050
 
